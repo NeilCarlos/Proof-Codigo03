@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsutasLINQ
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            EF_Consultas_LINQ context = new EF_Consultas_LINQ();
+           
+            
+            Console.WriteLine("Clientes");
+            foreach (var c in context.customers)
+            {
+                //console.writeline($"{c.customer_id} and {c.first_name}");
+            }
+
+            Console.WriteLine("Ver Facturas");
+
+            var verFacturas = context.customers
+                .Where(i => i.customer_id == 5 && i.first_name.Contains("C"))
+                .Select(x => new
+                {
+                    x.first_name,
+                    x.customer_id
+                });
+
+            foreach (var impCF in verFacturas)
+            {
+                //Console.WriteLine($" {impCF}");
+
+            }
+
+            Console.WriteLine("Mostrar los Productos del anio 2016");
+
+            var mostrarProductos = from group2016 in context.products
+                                   where group2016.model_year == 2016
+                                   orderby group2016.product_id descending
+                                   select group2016;
+
+            foreach (var produc2016 in mostrarProductos)
+            {
+                Console.WriteLine($"{produc2016.product_name} son del {produc2016.model_year}");
+            }
+
+
+            Console.ReadLine();
+        }
+
+           
+        
+    }
+}
